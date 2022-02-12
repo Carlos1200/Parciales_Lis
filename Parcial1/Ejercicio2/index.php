@@ -228,7 +228,7 @@ switch ($periodo){
         <div class="item">
           <label class="form-label" for="seleccion_pago">Seleccionar tipo de pago: <span>*</span></label>
           <select name="seleccion_pago" class="form-select">           
-             <option value="simple">Método simple:Cuota, amortización e interés fijo</option>
+             <option value="simple">Método simple: Cuota, amortización e interés fijo</option>
              <option value="compuesto">Método compuesto</option>
          </select>
         </div>
