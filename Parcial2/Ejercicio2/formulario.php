@@ -9,7 +9,12 @@
     <title>Form</title>
 </head>
 <body class="bg-secondary container-sm">
-    <h1 class="text-center text-white my-2">Formulario</h1>
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <h1 class="text-center text-white my-2">Formulario</h1>
+        <form action="libros.php" method="get" class="pl-5">
+            <button class="btn btn-success">Ver Libros</button>
+        </form>
+    </div>
     <?php if(isset($_GET['error'])): ?>
         <div class="alert alert-danger text-center">
             <?php if($_GET['error'] == 'true'): ?>

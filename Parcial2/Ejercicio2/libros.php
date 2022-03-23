@@ -69,20 +69,8 @@
     if(isset($_POST['enviar'])){
         $errores=validar();
         if(count($errores) == 0){
-            $libro=new Libro($_POST);
-            $libro->imprimirLibros();
 
-        }else{
-            redirect('formulario.php?error=true');
-        }
-        
-    }
-
-    class Libro{
-        public $libros=[];
-
-        public function __construct($args){
-            $librosstring=json_encode($args);
+            $librosstring=json_encode($_POST);
             $librosParced=json_decode($librosstring);
             $librosCookie=[];
             if(array_key_exists('libros',$_COOKIE)){
@@ -90,7 +78,29 @@
             }
             $arrayLibros=array_merge($librosCookie, [$librosParced]);
             setcookie('libros', json_encode($arrayLibros), time()+60*60*24*365);
-            $this->libros=$arrayLibros;
+
+            $libro=new Libro($arrayLibros);
+            $libro->imprimirLibros();
+
+        }else{
+            redirect('formulario.php?error=true');
+        }
+        
+    }else{
+        $librosCookie=[];
+        if(array_key_exists('libros',$_COOKIE)){
+            $librosCookie=json_decode($_COOKIE['libros']);
+        }
+        $libro=new Libro($librosCookie);
+        $libro->imprimirLibros();
+    }
+
+    class Libro{
+        public $libros=[];
+
+        public function __construct($args=[]){
+            
+            $this->libros=$args;
         }
 
         public function imprimirLibros(){
@@ -105,23 +115,22 @@
                     <title>Libros</title>
                 </head>
                 <body class="container-fluid bg-secondary">
-                    <h1 class="text-center my-5 text-white">Array Declarativo</h1>
+                    <h1 class="text-center my-5 text-white">Libros en inventario</h1>
+                    <form action="formulario.php" method="get">
+                        <button class="btn btn-warning">Regresar</button>
+                    </form>
                     <div class="row ">
                         <?php
                             foreach($this->libros as $book){
                                 ?>
                                     <div class="col-4 my-3">
                                         <div class="card">
-                                            <div class="card-header">
-                                                <h3 class="text-center"><?php echo $book->titulo ?></h3>
-                                            </div>
                                             <div class="card-body">
-                                                <p class="card-text">Autor: <?php echo $book->autor ?></p>
-                                                <p class="card-text">Edición: <?php echo $book->edicion ?></p>
-                                                <p class="card-text">Lugar: <?php echo $book->lugar ?></p>
-                                                <p class="card-text">Editorial: <?php echo $book->editorial ?></p>
-                                                <p class="card-text">Año: <?php echo $book->year ?></p>
-                                                <p class="card-text">ISBN: <?php echo $book->isbn ?></p>
+                                                <h3 class="text-center"><?php echo $book->titulo ?></h3>
+                                                <p class="card-text"><?php echo $book->autor ?></p>
+                                                <p class="card-text"><?php echo $book->edicion.'°, '.$book->lugar.', '.$book->editorial.', '.$book->year ?></p>
+                                                <p class="card-text"><?php echo $book->isbn ?></p>
+                                                <br>
                                                 <p class="card-text">Notas: <?php echo $book->notas ?></p>
                                             </div>
                                         </div>
