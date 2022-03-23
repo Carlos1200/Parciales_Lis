@@ -13,7 +13,6 @@
         $year = $_POST['year'];
         $isbn = $_POST['isbn'];
         $notas = $_POST['notas'];
-
         $errores = [];
 
         if(empty($autor)){
@@ -25,10 +24,6 @@
         }
         if(empty($titulo)){
             $errores['titulo'] = "El título es obligatorio";
-        }
-        //validate regex with letters, spaces and commas
-        if(!preg_match("/^[a-zA-Z\s,]+$/", $titulo)){
-            $errores['titulo'] = "El titulo no es válido";
         }
         if(empty($edicion)){
             $errores['edicion'] = "La edición es obligatoria";
@@ -55,7 +50,7 @@
             $errores['isbn'] = "El ISBN es obligatorio";
         }
         //validate isbn with regex with numbers
-        if(!preg_match("/^(97(8|9))?\d{9}(\d|X)$/", $isbn)){
+        if(!preg_match("/^(?:ISBN(?:-13)?:?\ )?(?=[0-9]{13}$|(?=(?:[0-9]+[-\ ]){4})[-\ 0-9]{17}$)97[89][-\ ]?[0-9]{1,5}[-\ ]?[0-9]+[-\ ]?[0-9]+[-\ ]?[0-9]$/", $isbn)){
             $errores['isbn'] = "El ISBN no es válido";
         }
         if(empty($notas)){
